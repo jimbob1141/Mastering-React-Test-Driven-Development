@@ -1,21 +1,37 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Appointment } from '../src/Appointment'
+import { Appointment, AppointmentsDayView } from '../src/Appointment'
 
-let container
-let customer
+
+
 describe('Appointment', () => {
+	let container
+	let customer
+	beforeEach(() => {
+	container = document.createElement('div')
+	})
+	const render = component => ReactDOM.render(component, container)
+
 	it('renders the customer first name', () => {
-		customer = { firstName: 'ashley' }
-		container = document.createElement('div')
-		ReactDOM.render(<Appointment customer={customer} />, container)
-		expect(container.textContent).toMatch("ashley")
+		customer = { firstName: 'Ashley' }
+		render(<Appointment customer={customer} />)
+		expect(container.textContent).toMatch("Ashley")
 	})
 		it('renders another customers first name', () => {
 		customer = { firstName: 'Jordan' }
-		container = document.createElement('div')
-		ReactDOM.render(<Appointment customer={customer} />, container)
+		render(<Appointment customer={customer} />)
 		expect(container.textContent).toMatch('Jordan')
 	})
 
-});
+})
+describe('AppointmentsDayView', () => {
+	let container
+	beforeEach(() => {
+		container = document.createElement('div')
+	})
+	const render = (component) => ReactDOM.render(component, container)
+	it('renders a div with the right ID', () => {
+		render(<AppointmentsDayView Appointments={[]} />)
+		expect(container.querySelector('div#appointmentsdayView')).not.toBeNull()
+	})
+})
