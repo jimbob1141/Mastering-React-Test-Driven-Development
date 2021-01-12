@@ -33,8 +33,13 @@ describe('AppointmentsDayView', () => {
 		container = document.createElement('div')
 		today = new Date()
 		appointments = [
-		{ startsAt: today.setHours(12, 0) },
-		{ startsAt: today.setHours(13, 0) }
+		{ startsAt: today.setHours(12, 0),
+		  customer: {firstName: 'Ashley'} },
+		{ startsAt: today.setHours(13, 0),
+		  customer: {firstName: 'Jordan'} },
+		{ startsAt: today.setHours(14, 0), 
+		  customer: {firstName: 'tessa'} }
+
 		]
 
 	})
@@ -48,12 +53,25 @@ describe('AppointmentsDayView', () => {
 
 		render(<AppointmentsDayView appointments={appointments} />)
 		expect(container.querySelector('ol')).not.toBeNull()
-		expect(container.querySelector('ol').children).toHaveLength(2)
+		expect(container.querySelector('ol').children).toHaveLength(3)
 	})
 	it('renders each appointment in an li', () => {
 		render(<AppointmentsDayView appointments={appointments} />)
-		expect(container.querySelectorAll('li')).toHaveLength(2)
+		expect(container.querySelectorAll('li')).toHaveLength(3)
 		expect(container.querySelectorAll('li')[0].textContent).toEqual('12:00')
 		expect(container.querySelectorAll('li')[1].textContent).toEqual('13:00')
 	})
+	it('initially shows a message that there are no appointments today', () => {
+		render(<AppointmentsDayView appointments={[]} />)
+		expect(container.textContent).toMatch('there are no appointments today')
+	})
+	it('selects the first appointment by default', () => {
+		render(<AppointmentsDayView appointments={appointments} />)
+		expect(container.textContent).toMatch('Ashley')
+	})
+	it('has a button element in each li', () => {
+		render(<AppointmentsDayView appointments={appointments} />)
+		expect(container.querySelectorAll('li > button')).toHaveLength(3)
+		expect(container.querySelectorAll('li > button')[0].type).toEqual('button')
+		})
 })
